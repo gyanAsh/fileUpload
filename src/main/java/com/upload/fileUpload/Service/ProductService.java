@@ -22,15 +22,22 @@ public class ProductService {
 
     public ProductDetails addNewProduct(String name, Double price, MultipartFile file) throws IOException {
             Product newProduct = new Product(name,price,file.getBytes(),file.getOriginalFilename(),file.getContentType());
-            String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/image/")
-                    .path(newProduct.getImageName())
-                    .toUriString();
-            newProduct.setImageUrl(url);
             Product savedProduct = productRepository.save(newProduct);
-            return new ProductDetails(savedProduct.getId(),savedProduct.getProductName(),savedProduct.getProductPrice(),savedProduct.getImageUrl());
+
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/image/")
+                .path(savedProduct.getId()+"/")
+                .path(savedProduct.getImageName())
+                .toUriString();
+        savedProduct.setImageUrl(url);
+        savedProduct = productRepository.save(savedProduct);
+
+        return new ProductDetails(savedProduct.getId(),savedProduct.getProductName(),savedProduct.getProductPrice(),savedProduct.getImageUrl());
 
     }
 
 
+    public Product getProduct(Long id, String imageName) throws Exception {
+        return productRepository.findById(id).orElseThrow(()-> new Exception("Product not found"));
+    }
 }

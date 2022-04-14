@@ -4,6 +4,9 @@ import com.upload.fileUpload.Entity.Product;
 import com.upload.fileUpload.ProductDetails;
 import com.upload.fileUpload.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,4 +33,7 @@ public class ProductController {
                                @RequestParam("file")MultipartFile file) throws IOException {
         return productService.addNewProduct(name,price,file);
     }
+
+
+
 }
